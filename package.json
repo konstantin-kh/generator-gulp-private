@@ -1,17 +1,18 @@
 {
   "name": "generator-gulp-private",
   "version": "1.0.0",
-  "description": "",
+  "description": "Gulp build for markup",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp",
+    "dist": "gulp dist"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/konstantin-kh/generator-gulp-private.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Konstantin Pomazan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/konstantin-kh/generator-gulp-private/issues"
@@ -23,8 +24,24 @@
     "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.0",
-    "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
+    "gulp-cssbeautify": "^1.0.1",
+    "gulp-csscomb": "^3.0.8",
+    "gulp-csso": "^3.0.1",
+    "gulp-eslint": "^6.0.0",
+    "gulp-group-css-media-queries": "^1.2.2",
+    "gulp-html-beautify": "^1.0.1",
+    "gulp-htmlhint": "^2.2.1",
+    "gulp-imagemin": "^6.1.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-responsive-imgz": "0.0.4",
+    "gulp-sass": "^4.0.2",
+    "gulp-sass-lint": "^1.4.0",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2"
-  }
+  },
+  "browserslist": [
+    "last 4 version"
+  ]
 }
