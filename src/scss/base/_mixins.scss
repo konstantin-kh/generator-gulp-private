@@ -1,0 +1,540 @@
+// vertical align el inside parent with fixed height/min-height
+// usage
+// html - .parent>.child
+// scss - @include v-align;
+//     or @include v-align(250px);
+//     or @include v-align(250px, bottom, before);
+//
+@mixin v-align($va-height: 100%, $va-direction: middle, $va-pseudo: after) {
+  white-space: nowrap;
+  text-align: center;
+
+  &:#{$va-pseudo} {
+    content: '';
+    display: inline-block;
+    vertical-align: $va-direction;
+    width: 0;
+    min-height: $va-height;
+  }
+
+  > * {
+    white-space: normal;
+    display: inline-block;
+    vertical-align: $va-direction;
+    max-width: 99%;
+  }
+}
+// vertical align a pair of child el inside parent
+// usage
+// html - .post>.image+.text
+// scss - @include v-align-pair(image, text);
+//     or @include v-align-pair(image, text, bottom);
+//     or @include v-align-pair(image, text, middle, 200px);
+//
+@mixin v-align-pair($child-name1, $child-name2, $valign: middle, $width1: auto, $width2: auto ) {
+  display: table;
+  .#{$child-name1}{
+    display: table-cell;
+    vertical-align: $valign;
+    width: $width1;
+  }
+ .#{$child-name2} {
+    display: table-cell;
+    vertical-align: $valign;
+    width: $width2;
+  }
+}
+
+// vertical align el
+// usage: @include vertical-align-el;
+//
+@mixin vertical-align-el {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/// Mixin helping defining both `width` and `height` simultaneously.
+///
+/// @author Hugo Giraudel
+///
+/// @access public
+///
+/// @param {Length} $width - Element’s `width`
+/// @param {Length} $height ($width) - Element’s `height`
+///
+/// @example scss - Usage
+///   .foo {
+///     @include size(10em);
+///   }
+///
+///   .bar {
+///     @include size(100%, 10em);
+///   }
+///
+/// @example css - CSS output
+///   .foo {
+///     width: 10em;
+///     height: 10em;
+///   }
+///
+///   .bar {
+///     width: 100%;
+///     height: 10em;
+///   }
+///
+@mixin size($width: 100px, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+/// font-smothing
+/// @include font-smoothing(on);
+/// @include font-smoothing(off);
+@mixin font-smoothing($value:on) {
+
+  @if $value == on {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  @else {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+
+  }
+}
+
+
+/// Hides the text in an element, commonly used to show an image. Some elements will need block-level styles applied.
+///
+/// @link http://zeldman.com/2012/03/01/replacing-the-9999px-hack-new-image-replacement
+///
+/// @example scss - Usage
+///   .element {
+///     @include hide-text;
+///   }
+///
+/// @example css - CSS Output
+///   .element {
+///     overflow: hidden;
+///     text-indent: 101%;
+///     white-space: nowrap;
+///   }
+///
+@mixin hide-text {
+  overflow: hidden;
+  text-indent: 101%;
+  white-space: nowrap;
+}
+
+
+/// Creates a visual triangle. https://github.com/thoughtbot/bourbon/blob/v5.1.0/core/bourbon/library/_triangle.scss
+/// Generates a triangle pointing in a specified direction.
+///
+/// @argument {string} $direction
+///   The direction the triangle should point. Accepts `up`, `up-right`,
+///   `right`, `down-right`, `down`, `down-left`, `left` or `up-left`.
+///
+/// @argument {number (with unit)} $width
+///   Width of the triangle.
+///
+/// @argument {number (with unit)} $height
+///   Height of the triangle.
+///
+/// @argument {color} $color
+///   Color of the triangle.
+///
+/// @example scss
+///   .element {
+///     &::before {
+///       @include triangle("up", 2rem, 1rem, #b25c9c);
+///       content: "";
+///     }
+///   }
+///
+///   // CSS Output
+///   .element::before {
+///     border-style: solid;
+///     height: 0;
+///     width: 0;
+///     border-color: transparent transparent #b25c9c;
+///     border-width: 0 1rem 1rem;
+///     content: "";
+///   }
+
+@mixin triangle(
+  $direction,
+  $width,
+  $height,
+  $color
+) {
+  @if not index(
+    "up" "up-right" "right" "down-right" "down" "down-left" "left" "up-left",
+    $direction
+  ) {
+    @error "Direction must be `up`, `up-right`, `right`, `down-right`, " +
+           "`down`, `down-left`, `left` or `up-left`.";
+  } @else if not _is-color($color) {
+    @error "`#{$color}` is not a valid color for the `$color` argument in " +
+           "the `triangle` mixin.";
+  } @else {
+    border-style: solid;
+    height: 0;
+    width: 0;
+
+    @if $direction == "up" {
+      border-color: transparent transparent $color;
+      border-width: 0 ($width / 2) $height;
+    } @else if $direction == "up-right" {
+      border-color: transparent $color transparent transparent;
+      border-width: 0 $width $width 0;
+    } @else if $direction == "right" {
+      border-color: transparent transparent transparent $color;
+      border-width: ($height / 2) 0 ($height / 2) $width;
+    } @else if $direction == "down-right" {
+      border-color: transparent transparent $color;
+      border-width: 0 0 $width $width;
+    } @else if $direction == "down" {
+      border-color: $color transparent transparent;
+      border-width: $height ($width / 2) 0;
+    } @else if $direction == "down-left" {
+      border-color: transparent transparent transparent $color;
+      border-width: $width 0 0 $width;
+    } @else if $direction == "left" {
+      border-color: transparent $color transparent transparent;
+      border-width: ($height / 2) $width ($height / 2) 0;
+    } @else if $direction == "up-left" {
+      border-color: $color transparent transparent;
+      border-width: $width $width 0 0;
+    }
+  }
+}
+
+
+/// Animate css properties
+// usage
+// scss - @include animate(color);
+//     or @include animate(color width);
+//     or @include animate(color width, 1s, linear);
+//
+
+@mixin animate($properties, $duration: $animation-speed, $easing: ease-in-out) {
+  $list:();
+  @each $prop in $properties {
+    $str: #{$prop} #{$duration} #{$easing};
+    $list: join($list, #{$str}, comma);
+  }
+  transition: $list;
+}
+
+//
+// @functions
+//
+
+// STRIP UNIT
+// It strips the unit of measure and returns it
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+// CONVERT TO REM
+@function convert-to-rem($value, $base-value: $rem-base) {
+  $value: strip-unit($value) / strip-unit($base-value) * 1rem;
+  @if ($value == 0rem) { $value: 0; } // Turn 0rem into 0
+  @return $value;
+}
+
+// REM CALC
+
+// New Syntax, allows to optionally calculate on a different base value to counter compounding effect of rem's.
+// Call with 1, 2, 3 or 4 parameters, 'px' is not required but supported:
+//
+//   rem-calc(10 20 30px 40);
+//
+// Space delimited, if you want to delimit using comma's, wrap it in another pair of brackets
+//
+//   rem-calc((10, 20, 30, 40px));
+//
+// Optionally call with a different base (eg: 8px) to calculate rem.
+//
+//   rem-calc(16px 32px 48px, 8px);
+//
+// If you require to comma separate your list
+//
+//   rem-calc((16px, 32px, 48), 8px);
+
+@function rem-calc($values, $base-value: $rem-base) {
+  $max: length($values);
+
+  @if $max == 1 { @return convert-to-rem(nth($values, 1), $base-value); }
+
+  $remValues: ();
+  @for $i from 1 through $max {
+    $remValues: append($remValues, convert-to-rem(nth($values, $i), $base-value));
+  }
+  @return $remValues;
+}
+
+@function em-calc($values, $base-value: $rem-base) {
+  $remValues: rem-calc($values, $base-value: $rem-base);
+
+  $max: length($remValues);
+
+  @if $max == 1 { @return strip-unit(nth($remValues, 1)) * 1em; }
+
+  $emValues: ();
+  @for $i from 1 through $max {
+    $emValues: append($emValues, strip-unit(nth($remValues, $i)) * 1em);
+  }
+  @return $emValues;
+}
+
+/// colors black & white
+/// @example scss - Usage
+///   .my-class {
+///     background: black(0.15);
+///     color: white(0.9);
+///   }
+@function black($opacity){
+  @return rgba(black, $opacity);
+}
+
+@function white($opacity){
+  @return rgba(white, $opacity);
+}
+
+// ------------------------------------------------------------
+// ---------------------- new mixins---------------------------
+// ------------------------------------------------------------
+
+
+//------------------------- mixin calculate font-size to Rem
+@function calculateRem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin fs($size) {
+  @if ($size > 20) {
+    font-size: calculateRem($size);
+  }
+  @else if ($size <= 16){
+    font-size: $size;
+  }
+  @else if ($size <= 17){
+    font-size: $size;
+    @include media("<=tablet") {
+      font-size: ($size - 1px);
+    }
+  }
+  @else if ($size <= 20) {
+    font-size: $size;
+    @include media("<=tablet") {
+      font-size: ($size - 2px);
+    }
+    @include media("<=xs-phone") {
+      font-size: ($size - 3px);
+    }
+  }
+}
+
+//how to use
+// p { @include fs(36px);}
+
+//------------------------- mixin calculate line-height to Rem
+@function calculateRemLh($sizeLh) {
+  $remSizeLh: $sizeLh / 16px;
+  @return $remSizeLh * 1rem;
+}
+
+@mixin lh($sizeLh) {
+  @if ($sizeLh > 24) {
+    line-height: calculateRemLh($sizeLh);
+  }
+  @else if ($sizeLh <= 18){
+    line-height: $sizeLh;
+  }
+  @else if ($sizeLh <= 24){
+    line-height: $sizeLh;
+    @include media("<=tablet") {
+      line-height: ($sizeLh - 4px);
+    }
+    @include media("<=xs-phone") {
+      line-height: ($sizeLh - 6px);
+    }
+  }
+}
+
+//how to use
+// p { @include lh(36px);}
+
+
+//-------------------------placeholder mixin
+@mixin optional-at-root($sel) {
+  @at-root #{if(not &, $sel, selector-append(&, $sel))} {
+    @content;
+  }
+}
+
+@mixin placeholder {
+  @include optional-at-root('::-webkit-input-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root('::-moz-placeholder') {
+    @content;
+  }
+
+  @include optional-at-root(':-ms-input-placeholder') {
+    @content;
+  }
+}
+
+//how to use
+// .foo {
+// 	@include placeholder {
+// 		color: green;
+// 	}
+// }
+
+//------------------------- mixin responsive-ratio with round off
+@mixin aspect-ratio($x, $y, $withinSelector: div) {
+  $var-aspect-ratio: ($y / $x);
+  $var-aspect-ratio-round: round($var-aspect-ratio * 10000) / 10000;
+  position: relative;
+  overflow: hidden;
+  &:before {
+    content: "";
+    display: block;
+    width: 100%;
+    padding-top: $var-aspect-ratio-round * 100%;
+  }
+  & > #{$withinSelector} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}
+//how to use
+//div {@include aspect-ratio(16,9,".class-within");}
+
+
+//------------------------- Mixin for vertical indentation
+@mixin liY($value:15px) {
+  &:nth-child(n+2) {
+    margin-top: $value;
+  }
+}
+
+//how to use
+// ul>li {@include liY(20px)}
+
+//------------------------- Mixin for horizontal indentation
+@mixin liX($value:15px) {
+  &:nth-child(n+2) {
+    margin-left: $value;
+  }
+}
+
+//how to use
+// ul>li {@include liX(20px}
+
+// ----------------------------------------------
+// ----------------new function -----------------
+// ----------------------------------------------
+
+//------------------------- function calculate px --to-- %
+@function p($width-block, $width-container: $width-block) {
+  @if (unitless($width-block)) {
+    $width-block: $width-block * 1px;
+  }
+  @if (unitless($width-container)) {
+    $width-container: $width-container * 1px;
+  }
+  @return round($width-block / $width-container*100%* 100) / 100;
+}
+//how to use
+// .block {width: p(1000px, 200px);}
+
+//------------------------- function calculate px --to-- em
+$browser-context: 16;
+
+@function em($pixels, $context: $browser-context) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+  $em-pixels: $pixels / $context * 1em;
+  @return round($em-pixels * 1000) / 1000;
+}
+
+//how to use
+//div {
+// font-size: em(20px, 18px);
+// }
+
+//------------------------- function calculate px --to-- rem
+$browser-context-for-rem: 16px;
+
+@function rem($size, $context-for-rem: $browser-context-for-rem) {
+  @if (unitless($size)) {
+    $size: $size * 1px;
+  }
+  @if (unitless($context-for-rem)) {
+    $context-for-rem: $context-for-rem * 1px;
+  }
+  $remSize: $size / $context-for-rem;
+  //rounding to the thousandth - if you need to add or subtract 0 or less when dividing
+  $roundremSize: round($remSize * 1000) / 1000;
+  @return $roundremSize * 1rem;
+}
+
+//how to use
+//div {
+// font-size: rem(20px, 16px);
+// }
+
+/// Slightly lighten a color
+/// @access public
+/// @param {Color} $color - color to tint
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+//how to use
+//div {
+// background-color: tint(#FF0000, 50%);
+// }
+
+/// Slightly darken a color
+/// @access public
+/// @param {Color} $color - color to shade
+/// @param {Number} $percentage - percentage of `$color` in returned color
+/// @return {Color}
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+//how to use
+//div {
+//  background-color: shade(#FF0000, 50%);
+// }
+
+//------------------------- function calculate px --to-- vw
+@function vw($px, $screen-width: 1920) {
+  @return round( ($px/($screen-width * 0.01) ) * 100) / 100 * 1vw;
+}
+
+//how to use
+// .container {
+// 	width: vw(100, 1200) !important;
+// }

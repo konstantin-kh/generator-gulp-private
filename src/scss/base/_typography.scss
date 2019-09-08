@@ -1,0 +1,232 @@
+//-------------------- #html box-sizing
+html {
+	$html-font-size: 100%;
+
+	box-sizing: border-box;
+	//fix iOS bugs reset paddings
+	padding: constant(safe-area-inset); //iOS 11
+	padding: env(safe-area-inset); //iOS 11.2+
+	font-size: $html-font-size;
+
+	@include media("<desktop") {
+		font-size: $html-font-size - 15%;
+	}
+
+	@include media("<tablet") {
+		font-size: $html-font-size - 20%;
+	}
+
+	@include media("<phone") {
+		font-size: $html-font-size - 25%;
+	}
+
+	@include media("<xs-phone") {
+		overflow-x: hidden;
+		font-size: $html-font-size - 30%;
+	}
+}
+html,
+body {
+	height: 100%;
+}
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+// max-height to all
+* { max-height: 1000000px; }
+
+// adaptive images
+img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: top;
+}
+
+//-------------------- #body
+body {
+	color: $base-text-color;
+	font: #{$font-size-base}/#{$line-height-base} $base-font-family;
+	min-width: 320px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+//---------------- #h style h1-h6
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6,
+.h {
+	font-family: $heading-font-family;
+	font-weight: $heading-font-weight;
+	line-height: $heading-line-height;
+	color: inherit;
+	text-transform: uppercase;
+	margin: 0 0 1.45em;
+
+	@include media("<tablet") {
+		margin-bottom: 1em;
+	}
+	a {
+		color: inherit;
+		&:hover {
+			color: $color-brand;
+		}
+	}
+}
+
+h1,
+.h1 {
+	@include fs($h1-font-size);
+	margin: 0 0 0.5em;
+}
+
+h2,
+.h2 {
+	@include fs($h2-font-size);
+	margin: 0 0 0.6em;
+}
+
+h3,
+.h3 {
+	@include fs($h3-font-size);
+	margin: 0 0 0.7em;
+}
+
+h4,
+.h4 {
+	@include fs($h4-font-size);
+	margin: 0 0 0.8em;
+}
+
+h5,
+.h5 {
+	@include fs($h5-font-size);
+	margin: 0 0 0.9em;
+}
+
+h6,
+.h6 {
+	@include fs($h6-font-size);
+	margin: 0 0 1em;
+}
+//------------------- #p
+p {
+	margin-bottom: rem(25px);
+	margin-top: 0;
+}
+
+//------------------- #a
+a {
+	color: $color-brand;
+	text-decoration: none;
+	transition: $btn-transition;
+	&:hover {
+		color: darken($color-brand, 15%);
+	}
+}
+
+//----------------------------- style #ol #ul #li
+ul,
+ol {
+	margin: 0 0 1.85em;
+
+	@include media("<desktop") {
+		margin-bottom: 1rem;
+	}
+
+	@include media("<tablet") {
+		margin-bottom: .5rem;
+	}
+}
+
+//---------------------- #table
+table {
+	width: 100%;
+	border: 1px solid #ccc;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 15px;
+	th,
+	td {
+		padding: .5em;
+		border: 1px solid #7e7e7e;
+		text-align: left;
+		vertical-align: top;
+
+		@include media("<phone") {
+			padding: 10px 5px;
+		}
+	}
+	th {
+		text-align: center;
+		vertical-align: middle;
+		background: #eee;
+	}
+}
+
+//------------------- #pre
+pre {
+	max-width: 100%;
+	background: rgba(#000, .1);
+	padding: 0.5em;
+}
+
+//------------------- #blockquote
+blockquote {
+	margin-bottom: 20px;
+	border-left: 5px solid $color-brand;
+	padding: 10px;
+}
+
+//------------------- #dl | dt | dd
+dl {
+	dt {
+		float: left;
+		clear: left;
+		padding-right: 0.3em;
+		font-weight: bold;
+	}
+	dd {
+		margin-left: 0;
+	}
+}
+
+//------------------- #container
+.container {
+	max-width: $container-width-full;
+	width: 100%;
+	margin: 0 auto;
+	padding-left: $container-pading-left;
+	padding-right: $container-pading-right;
+
+	@media (min-width: 812px) and (max-height: 414px) {
+		//increase paddings that content didn't disturb notch for landscape orientation https://twitter.com/i/status/907911237983449088
+		padding-left: 50px !important;
+		padding-right: 50px !important;
+	}
+
+	@include media("<tablet") {
+		padding: 0 30px;
+	}
+
+	@include media("<phone") {
+		padding: 0 15px;
+	}
+
+	&--fluid {
+		max-width: 100%;
+	}
+}

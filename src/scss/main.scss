@@ -1,14 +1,12 @@
-body {
-  font-size: 20px;
-  margin: 0;
-  background: red;
-
-  @media (min-width: 1800px) {
-    background: green;
-  }
-}
-
-h1 {
-  font-size: 2rem;
-  line-height: 1.2;
-}
+//-----import media mixins
+@import 'base/variables';
+@import 'vendors/include-media';
+@import 'vendors/normalize';
+@import 'base/mixins';
+@import 'base/button';
+@import 'base/helpers';
+@import 'base/forms';
+@import 'base/typography';
+@import 'layout/header';
+@import 'layout/common';
+@import 'layout/footer';

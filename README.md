@@ -16,8 +16,6 @@
   - `gulp build`- this is used to compile project assets into production.
   - `gulp clean`- this is used to delete the tmp and dist folders.
 
-  - **_NOTE:_** by default - we have an [extended](https://github.com/sass/node-sass#outputstyle) version of compiled CSS both in dev and prod mode.
-
 ### **IMPORTANT:**
 
 If you are facing some troubles while installing build on your machine, please make sure that you have a correct version of the NODE JS.

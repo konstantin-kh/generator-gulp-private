@@ -1,0 +1,114 @@
+// forms
+form,
+fieldset {
+	margin: 0;
+	padding: 0;
+	border-style: none;
+}
+
+select {
+	border-radius: 0;
+}
+
+input[type='text'],
+input[type='tel'],
+input[type='email'],
+input[type='search'],
+input[type='password'],
+input[type='url'],
+// input[type='date'],
+textarea {
+	// $btn-padding-y | $btn-padding-x | $btn-font-size | $btn-radius | $btn-border-width | $btn-line-height
+	@include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-font-weight, $btn-radius, $btn-border-width, $btn-line-height, $btn-letter-spacing);
+	//color button mixin $background | $color | $border | $hover-background | $hover-color | $hover-border
+	@include button-variant($white, $input-color, $input-border-color, $white, $input-color, $input-border-color);
+	display: block;
+	width: 100%;
+	text-align: left;
+	-webkit-appearance: none;
+	box-sizing: border-box;
+	outline-color: transparent;
+	border-style: solid;
+	opacity: 1;
+	transition: $input-transition;
+	height: $input-height;
+
+	@include placeholder {
+		opacity: 1;
+		color: $input-placeholder-color;
+	}
+}
+
+textarea {
+	resize: vertical;
+	vertical-align: top;
+	width: 100%;
+	min-height: 150px;
+	max-height: 250px;
+}
+
+/* button, */
+button,
+input[type='button'],
+input[type='reset'],
+// input[type='file'],
+input[type='submit'] {
+	display: inline-block;
+	vertical-align: top;
+
+	@include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-font-weight, $btn-radius, $btn-border-width, $btn-line-height, $btn-letter-spacing);
+	//color button mixin $background | $color | $border | $hover-background | $hover-color | $hover-border
+	@include button-variant($btn-bg-color, $white, $btn-bg-color);
+	border-style: solid;
+	-webkit-appearance: none;
+	cursor: pointer;
+	transition: $input-transition;
+	height: $input-height;
+}
+
+.form-control {
+	display: block;
+	width: 100%;
+	height: $input-height;
+}
+
+//------------------- style #input #textarea
+// removes the icon in the search type field
+input[type="search"]::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+}
+
+// smoothly changing the transparency of the placeholder with focus for textarea and input and inheritance of font color
+textarea,
+input {
+	@include placeholder {
+		opacity: 1;
+		transition: opacity .3s ease;
+	}
+
+	&:hover,
+	&:focus {
+		outline: none;
+		border-color: $form-element-focus-border-color;
+		box-shadow: 0 0 2px 2px $form-element-focus-border-color;
+	}
+
+	&:focus {
+		@include placeholder {
+			opacity: 0;
+			transition: opacity .3s ease;
+		}
+	}
+}
+
+input[type='file'] {
+	height: auto;
+	padding: 0;
+	background: none;
+	color: inherit;
+	text-transform: none;
+	&:hover {
+		background: none;
+		color: inherit;
+	}
+}

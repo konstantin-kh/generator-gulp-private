@@ -1,0 +1,128 @@
+$breakpoints: (
+	'fullscreen': 1920px,
+	'widescreen': 1680px,
+	'laptop': 1440px,
+	'desktop': 1024px,
+	'tablet': 768px,
+	'phone': 667px,
+	'xs-phone': 375px,
+);
+// ligatured operators ≥ ≤
+
+// keywords
+$media-expressions: (
+	'screen': 'screen',
+	'print': 'print',
+	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
+	'retina2x': '(-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)',
+	'retina3x': '(-webkit-min-device-pixel-ratio: 2.5), (min-resolution: 240dpi)'
+);
+
+// Colors basic
+// Color calculator - http://razorjam.github.io/sasscolourfunctioncalculator/
+// Color names - http://name-of-color.com/
+
+$black:      #000;
+$white:      #fff;
+
+$gray-100:   #ebebeb;
+$gray-400:   #999;
+$gray-500:   #7b7b7b;
+$gray-600:   #666;
+$gray-900:   #222;
+
+$blue-100:   #f7faff;
+$blue-200:   #edf1fa;
+$blue-400:   #0576f5;
+$blue-600:   #00418a;
+
+$orange-400: #f7941d;
+
+$green-400:  #1ab56b;
+$green-900:  #1d292b;
+
+$teal-400:   #2dc0bb;
+
+// Colors theme
+$color-brand:          $green-400;
+$color-brand-dark:     $green-900;
+$color-brand-light:    $green-400;
+
+// Fonts
+// $font-folder-root: "../fonts/";
+$font-nunito: 'Nunito Sans', sans-serif;
+$base-font-sans-serif: $font-nunito;
+$base-font-serif: 'Times New Roman', 'Times', 'Baskerville', 'Georgia', serif;
+$base-main-font: $base-font-sans-serif;
+// @include ff-mixin($font-veneer, $font-folder-root+$font-veneer, 400, normal);
+
+// This is the default html and body font-size for the base rem value.
+$rem-base: 16px;
+
+// Body
+$base-text-color: $green-900;
+$font-size-base: 1.13rem;
+$line-height-base: 1.67;
+$base-font-family: $base-font-sans-serif;
+$vertical-rhythm: ($line-height-base * 1em);
+
+$background-primary: $blue-100;
+$base-border-radius: 0.2rem;
+
+// Headers
+$h1-font-size: 46px;
+$h2-font-size: 44px;
+$h3-font-size: 32px;
+$h4-font-size: 24px;
+$h5-font-size: 22px;
+$h6-font-size: $rem-base;
+
+$heading-font-family: $base-main-font;
+$heading-font-weight: 700;
+$heading-line-height: 1.35;
+
+// Container
+$container-width: 1120px;
+$container-pading-left: 20px;
+$container-pading-right: $container-pading-left;
+$container-width-full: $container-width + $container-pading-left + $container-pading-right;
+
+// Buttons + Forms
+$border-width:        1px !default;
+$input-btn-padding-y: 0.875rem;
+$input-btn-padding-x: .75rem !default;
+
+// Buttons
+$btn-min-width: 170px;
+$btn-padding-y: $input-btn-padding-y;
+$btn-padding-x: $input-btn-padding-x;
+$btn-font-size: 1.19rem;
+$btn-font-weight: 700;
+$btn-font-family: $base-font-sans-serif;
+$btn-radius: $base-border-radius;
+$btn-border-width: $border-width;
+$btn-line-height: 1.2;
+$btn-letter-spacing: 0;
+$btn-bg-color: $orange-400;
+$btn-bg-none: none;
+
+// Forms
+$input-btn-border-width:  $btn-border-width !default;
+$input-height-border:     $input-btn-border-width * 4;
+$input-padding-y:         $input-btn-padding-y !default;
+$input-padding-x:         1.8rem;
+$input-line-height:       $btn-line-height !default;
+$input-height:            calc(#{$input-line-height * 1rem} + #{$input-padding-y * 2} + #{$input-height-border}) !default;
+$input-color:             $gray-900;
+$input-border-color:      $blue-600;
+$input-placeholder-color: $gray-900;
+$input-font-weight:       700;
+$form-element-focus-border-color: $blue-400;
+
+// Transition
+$transition-duration: .25s;
+$transition-name: ease;
+$btn-transition: color $transition-duration $transition-name, background $transition-duration $transition-name, opacity $transition-duration $transition-name , border-color $transition-duration $transition-name !default;
+$input-transition: background $transition-duration $transition-name, border-color $transition-duration $transition-name, box-shadow $transition-duration $transition-name !default;

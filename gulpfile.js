@@ -24,7 +24,9 @@ const paths = {
   src: 'src/**/*',
   srcHTML: 'src/**/*.html',
   srcSCSS: 'src/**/*.scss',
+  srcPathSCSS: 'src/scss/',
   srcJS: 'src/**/*.js',
+  srcPathJS: 'src/js/',
   srcIMG: 'src/img/**',
   tmp: 'tmp',
   tmpIndex: 'tmp/index.html',
@@ -79,10 +81,24 @@ gulp.task('html:dev', () => {
 
 const styleFiles = [
   `${paths.srcSCSS}`,
-  `!${paths.srcRoot}/scss/vendors/**/*.scss`,
+  `!${paths.srcPathSCSS}/vendors/**/*.scss`,
+  `!${paths.srcPathSCSS}/_vendor/**/*.scss`,
+  `!${paths.srcPathSCSS}/base/_mixins.scss`,
 ]
 
-gulp.task('scss', () => {
+gulp.task('sass-lint', () => {
+  return gulp
+    .src(styleFiles)
+    .pipe(
+      sassLint({
+        configFile: '.sass-lint.yml'
+      })
+    )
+    .pipe(sassLint.format())
+    .pipe(sassLint.failOnError())
+});
+
+gulp.task('scss:dev', gulp.series('sass-lint'), () => {
   return gulp
     .src(paths.srcSCSS)
     .pipe(plumber({
@@ -99,16 +115,23 @@ gulp.task('scss', () => {
     .pipe(browserSync.stream())
 });
 
-gulp.task('sass-lint', () => {
-  return gulp.src(styleFiles)
-    .pipe(
-      sassLint({
-        configFile: './sass-lint.yml'
-      })
-    )
-    .pipe(sassLint.format())
-    .pipe(sassLint.failOnError())
-});
+// gulp.task('eslint', () => {
+//   gulp
+//     .src([
+//       `${paths.srcPathJS}**/*.js`,
+//       '!node_modules/**',
+//       `!${paths.srcPathJS}ES5/**/*.js`,
+//       `!${paths.srcPathJS}vendors/**/*.js`,
+//       `!${paths.srcPathJS}**/*.min.js`
+//       `!${paths.srcPathJS}jquery-3.3.1.min.js`
+//     ])
+//     .pipe(
+//       eslint({
+//         configFile: './eslintrc.json',
+//       })
+//     )
+//     .pipe(eslint.format());
+// });
 
 gulp.task('js:dev', () => {
   return gulp
@@ -129,7 +152,7 @@ gulp.task('img-compress', () => {
     .pipe(gulp.dest(paths.tmpPathIMG))
 });
 
-gulp.task('copy:dev', gulp.series('html:dev', 'scss', 'js:dev', 'img-compress'));
+gulp.task('copy:dev', gulp.series('html:dev', 'scss:dev', 'js:dev', 'img-compress'));
 
 gulp.task('inject:dev', gulp.series('copy:dev'), () => {
   const css = gulp.src(paths.tmpCSS);
@@ -275,8 +298,7 @@ gulp.task('watch', () => {
   });
 
   gulp.watch(paths.srcIMG, gulp.series('img-compress'))
-  gulp.watch(paths.srcSCSS, gulp.series('scss'))
-  gulp.watch(styleFiles, gulp.series('sass-lint'))
+  gulp.watch(paths.srcSCSS, gulp.series('scss:dev'))
   gulp.watch(paths.srcJS, gulp.series('js:dev'))
   gulp.watch(paths.srcHTML, gulp.series('html:dev'))
   gulp.watch(paths.srcHTML).on('change', browserSync.reload)
