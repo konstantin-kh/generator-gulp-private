@@ -1,0 +1,14 @@
+body {
+  font-size: 20px;
+  margin: 0;
+  background: red;
+
+  @media (min-width: 1800px) {
+    background: green;
+  }
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+}

@@ -2,3 +2,5 @@ node_modules
 npm-cache
 input
 .vscode
+tmp
+# dist
