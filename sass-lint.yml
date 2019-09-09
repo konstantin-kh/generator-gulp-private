@@ -3,6 +3,12 @@ options:
   merge-default-rules: true
 files:
   include: '**/*.s+(a|c)ss'
+  ignore:
+  - 'scss/**/_icomoon.scss'
+  - 'scss/**/_button.scss'
+  - 'scss/**/_helpers.scss'
+  - 'scss/**/_mixins.scss'
+  - 'scss/vendor/**/*.scss'
 rules:
   attribute-quotes:
     - 1

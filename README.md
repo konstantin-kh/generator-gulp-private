@@ -14,7 +14,7 @@
 
   - `gulp` - this will compile the entire project into development mode, start browserSync on localhost and will watch all the changes to the SCSS, html, images etc.
   - `gulp build`- this is used to compile project assets into production.
-  - `gulp clean`- this is used to delete the tmp and dist folders.
+  - `gulp clean`- this is used to delete the tmp folder.
 
 ### **IMPORTANT:**
 

@@ -28,19 +28,22 @@ const paths = {
   srcJS: 'src/**/*.js',
   srcPathJS: 'src/js/',
   srcIMG: 'src/img/**',
+  srcFonts: 'src/fonts/**',
   tmp: 'tmp',
   tmpIndex: 'tmp/index.html',
   tmpSCSS: 'tmp/**/*.scss',
   tmpCSS: 'tmp/css/',
   tmpJS: 'tmp/**/*.js',
   tmpPathIMG: 'tmp/img/',
+  tmpPathFonts: 'tmp/fonts/',
   dist: 'dist',
   distIndex: 'dist/index.html',
   distCSS: 'dist/**/*.css',
   distPathCSS: 'dist/css',
   distJS: 'dist/**/*.js',
   distPathJS: 'dist/js',
-  distPathIMG: 'dist/img'
+  distPathIMG: 'dist/img',
+  distPathFonts: 'dist/fonts'
 };
 
 //----------#OPTIONS WITH HTMLBEAUTIFY PLUGIN
@@ -84,21 +87,25 @@ const styleFiles = [
   `!${paths.srcPathSCSS}/vendors/**/*.scss`,
   `!${paths.srcPathSCSS}/_vendor/**/*.scss`,
   `!${paths.srcPathSCSS}/base/_mixins.scss`,
+  `!${paths.srcPathSCSS}/base/_forms.scss`,
 ]
 
 gulp.task('sass-lint', () => {
   return gulp
     .src(styleFiles)
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
     .pipe(
       sassLint({
-        configFile: '.sass-lint.yml'
+        configFile: 'sass-lint.yml'
       })
     )
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError())
 });
 
-gulp.task('scss:dev', gulp.series('sass-lint'), () => {
+gulp.task('scss:dev', () => {
   return gulp
     .src(paths.srcSCSS)
     .pipe(plumber({
@@ -152,7 +159,16 @@ gulp.task('img-compress', () => {
     .pipe(gulp.dest(paths.tmpPathIMG))
 });
 
-gulp.task('copy:dev', gulp.series('html:dev', 'scss:dev', 'js:dev', 'img-compress'));
+gulp.task('fonts-copy', () => {
+  return gulp
+    .src(paths.srcFonts)
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
+    .pipe(gulp.dest(paths.tmpPathFonts))
+});
+
+gulp.task('copy:dev', gulp.series('html:dev', 'scss:dev', 'sass-lint', 'js:dev', 'img-compress', 'fonts-copy'));
 
 gulp.task('inject:dev', gulp.series('copy:dev'), () => {
   const css = gulp.src(paths.tmpCSS);
@@ -204,14 +220,23 @@ gulp.task('scss:dist', () => {
 gulp.task('js:dist', () => {
   return gulp
     .src(paths.srcJS)
-    .pipe(concat('app.js'))
+    // .pipe(concat('app.js'))
     .pipe(uglify({
       toplevel: true
     }))
-    .pipe(gulp.dest(paths.distPathJS));
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('img-compress:dist', () => {
+  return gulp
+    .src(paths.srcFonts)
+    .pipe(plumber({
+      errorHandler: notify.onError('Error: <%= error.message %>')
+    }))
+    .pipe(gulp.dest(paths.distPathFonts))
+});
+
+gulp.task('fonts-copy:dist', () => {
   return gulp
     .src(paths.srcIMG)
     .pipe(plumber({
@@ -223,7 +248,7 @@ gulp.task('img-compress:dist', () => {
     .pipe(gulp.dest(paths.distPathIMG))
 });
 
-gulp.task('copy:dist', gulp.series('html:dist', 'scss:dist', 'js:dist', 'img-compress:dist'));
+gulp.task('copy:dist', gulp.series('html:dist', 'scss:dist', 'js:dist', 'img-compress:dist', 'fonts-copy:dist'));
 
 gulp.task('inject:dist', gulp.series('copy:dist'), () => {
   const css = gulp.src(paths.distCSS);
@@ -242,7 +267,7 @@ gulp.task('inject:dist', gulp.series('copy:dist'), () => {
 
 const delFiles = [
   `${paths.tmp}`,
-  `${paths.dist}`,
+  // `${paths.dist}`,
 ]
 
 gulp.task('clean', () => {
@@ -298,7 +323,9 @@ gulp.task('watch', () => {
   });
 
   gulp.watch(paths.srcIMG, gulp.series('img-compress'))
+  gulp.watch(paths.srcFonts, gulp.series('fonts-copy'))
   gulp.watch(paths.srcSCSS, gulp.series('scss:dev'))
+  gulp.watch(paths.srcSCSS, gulp.series('sass-lint'))
   gulp.watch(paths.srcJS, gulp.series('js:dev'))
   gulp.watch(paths.srcHTML, gulp.series('html:dev'))
   gulp.watch(paths.srcHTML).on('change', browserSync.reload)
